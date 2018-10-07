@@ -1,0 +1,23 @@
+using System;
+
+namespace _171._Excel_Sheet_Column_Number
+{
+    class Program
+    {
+        static void Main(string[] args)
+        {
+            Console.WriteLine(TitleToNumber("AB"));
+        }
+
+        public static int TitleToNumber(string s)
+        {
+            char[] array = s.ToCharArray();
+            int result = 0;
+            for(int i= array.Length-1; i>=0; i--)
+            {
+                result += (array[i]-64) * Convert.ToInt32(Math.Pow(26, array.Length - i - 1)) ;
+            }
+            return result;
+        }
+    }
+}
