@@ -1,0 +1,56 @@
+using System;
+
+namespace _13._Roman_to_Integer
+{
+    class Program
+    {
+        static void Main(string[] args)
+        {
+            Console.WriteLine(RomanToInt("MCMXCIV"));
+        }
+
+        public static int RomanToInt(string s)
+        {
+            int result = 0;
+            if (s.IndexOf("IV") != -1) result -= 2;
+            if (s.IndexOf("IX") != -1) result -= 2;
+            if (s.IndexOf("XL") != -1) result -= 20;
+            if (s.IndexOf("XC") != -1) result -= 20;
+            if (s.IndexOf("CD") != -1) result -= 200;
+            if (s.IndexOf("CM") != -1) result -= 200;
+
+            char[] chars = s.ToCharArray();
+            for(int i = 0; i<chars.Length; i++)
+            {
+                switch (chars[i]) {
+                    case 'I':
+                        result += 1;
+                        break;
+                    case 'V':
+                        result += 5;
+                        break;
+                    case 'X':
+                        result += 10;
+                        break;
+                    case 'L':
+                        result += 50;
+                        break;
+                    case 'C':
+                        result += 100;
+                        break;
+                    case 'D':
+                        result += 500;
+                        break;
+                    case 'M':
+                        result += 1000;
+                        break;
+                    default:
+                        break;
+                }
+                
+            }
+            return result;
+
+        }
+    }
+}
