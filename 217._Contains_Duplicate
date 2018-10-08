@@ -1,0 +1,34 @@
+using System;
+using System.Collections.Generic;
+using System.Linq;
+
+namespace _217._Contains_Duplicate
+{
+    class Program
+    {
+        static void Main(string[] args)
+        {
+            int[] test = new int[] { 1, 2, 3, 4 };
+            Console.WriteLine(ContainsDuplicate(test));
+        }
+
+        public static bool ContainsDuplicate(int[] nums)
+        {
+            // by using hash table
+            //Dictionary<int, int> dictionary = new Dictionary<int, int>();
+            //foreach(int num in nums)
+            //{
+            //    if (dictionary.ContainsValue(num))
+            //    {
+            //        return true;
+            //    }
+            //    dictionary.Add(num, num);
+            //}
+            //return false;
+
+            //by using linq
+            return nums.Length == nums.Distinct().Count() ? false : true;
+        }
+
+    }
+}
