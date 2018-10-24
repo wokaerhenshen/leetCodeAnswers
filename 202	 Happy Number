@@ -1,0 +1,26 @@
+public class Solution {
+    public bool IsHappy(int n) {
+        if(n == 1) return true;
+        Dictionary<int,int> dictionary = new Dictionary<int,int>();
+        int test = n;
+        while(test != 1){
+            if(dictionary.ContainsKey(test)){
+                return false;
+            }else {
+                dictionary.Add(test,1);
+            }
+            
+            int result = 0;
+            
+            while(test>0){
+                result += Convert.ToInt32(Math.Pow((test%10),2));
+                test /= 10;
+            }
+            
+            test = result;
+            
+            
+        }
+        return true;
+    }   
+}
