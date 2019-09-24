@@ -1,0 +1,51 @@
+question:
+
+You have a set of tiles, where each tile has one letter tiles[i] printed on it.  Return the number of possible non-empty sequences of letters you can make.
+
+ 
+
+Example 1:
+
+Input: "AAB"
+Output: 8
+Explanation: The possible sequences are "A", "B", "AA", "AB", "BA", "AAB", "ABA", "BAA".
+Example 2:
+
+Input: "AAABBC"
+Output: 188
+
+
+
+
+best answer solution:
+
+class Solution {
+    
+    int total;
+    
+    void count(int[] fre, int currentLength, int maxLength) {
+        if (currentLength == maxLength) return;
+        
+        for (int i = 0; i < fre.length; ++i) {
+            if (fre[i] > 0) {
+                fre[i]--;
+                total++;
+                count(fre, currentLength + 1, maxLength);
+                fre[i]++;
+            }
+        }
+    }
+    
+    //将char都存到26个元素的数组里，并且数字代表出现的次数
+    public int numTilePossibilities(String tiles) {
+        int[] fre = new int[26];
+        for (char c : tiles.toCharArray()) {
+            fre[c - 'A']++;
+        }
+        count(fre, 0, tiles.length());
+        return total;
+    }
+}
+
+
+
