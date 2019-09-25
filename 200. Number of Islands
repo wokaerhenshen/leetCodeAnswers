@@ -28,7 +28,7 @@ var numIslands = function(grid) {
     for (let r = 0; r < grid.length; r++) {
         for (let c = 0; c < grid[r].length; c++) { //check所有的点
             if (grid[r][c] === '1') { //如果为1表示还没被玷污过，可以count++
-                dfs(grid, r, c);
+                dfs(grid, r, c); //要去玷污了！
                 count += 1;
             }
         }
