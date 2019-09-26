@@ -1,0 +1,116 @@
+Given a string, your task is to count how many palindromic substrings in this string.
+
+The substrings with different start indexes or end indexes are counted as different substrings even they consist of same characters.
+
+Example 1:
+
+Input: "abc"
+Output: 3
+Explanation: Three palindromic strings: "a", "b", "c".
+ 
+
+Example 2:
+
+Input: "aaa"
+Output: 6
+Explanation: Six palindromic strings: "a", "a", "a", "aa", "aa", "aaa".
+
+karl solution:
+
+//1. create a new method  to check if a certain string is palindromic.
+//2. loop through the string and for each letter loop to check.
+
+public class Solution {
+    public int CountSubstrings(string s) {
+        if(s.Length == 1) return 1;
+        int result = 0;
+        for(int i = 0 ; i < s.Length  ; i++){
+            for(int j = 1 ; j < s.Length - i +1 ; j++){
+                if(isPalindromic(s.Substring(i,j))){
+                    result++;
+                }
+            }
+        }
+        return result;
+    }
+    
+    public bool isPalindromic(string s){
+        if(s.Length == 1) return true;
+        for(int i = 0 ; i < s.Length ; i++){
+            if(s[i] != s[s.Length - i -1]){
+                return false;
+            }
+        }
+        return true;
+    }
+}
+
+
+DP Solution:
+
+class Solution {
+    /**
+    Hint: Using dp matrix to look up whether the previous closure equals or not
+    
+    For instance, acdca
+    1. a (x-axis) -> a (Y-axis) = true
+      a c d c a
+    a T
+    c 
+    d     
+    c       
+    a
+    
+    2. c->c = T, a->c = F
+      a c d c a
+    a T
+    c F T
+    d     
+    c       
+    a
+    
+    3. d->d=T, c->d=F, a->d=F
+      a c d c a
+    a T
+    c F T
+    d F F T   
+    c       
+    a
+    
+    4. c->c=T, d->c=F, c->c=T (look up the previous closure d->d)=T, c->a=F
+      a c d c a
+    a T
+    c F T
+    d F F T   
+    c F T F T
+    a
+    
+    5. a->a=T, c->a=F, d->a=F, c->a=F, a->a=T(look up the previous previous c->c=T(includes its previous closure(d->d))
+      a c d c a
+    a T
+    c F T
+    d F F T   
+    c F T F T
+    a T F F F T
+    
+    Count all the T, we get 7
+    Time complexity, N+N-1+N-2+....+1 = O(N(1+N)/2) = O(N^2)
+    
+    */
+    public int countSubstrings(String s) {
+        boolean[][] dp = new boolean[s.length()][s.length()];
+        int res = 0;
+        for (int i=0;i<s.length();i++) {
+            for (int j=i;j>=0;j--) {
+                if (s.charAt(i)==s.charAt(j)) {
+                    if (i-j<2 || dp[i-1][j+1]) {
+                        res++;
+                        dp[i][j] = true;
+                    }
+                }
+            }
+        }
+        return res;
+    }
+}
+
