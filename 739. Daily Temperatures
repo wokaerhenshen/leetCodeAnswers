@@ -1,0 +1,45 @@
+Given a list of daily temperatures T, return a list such that, for each day in the input, tells you how many days you would have to wait until a warmer temperature. If there is no future day for which this is possible, put 0 instead.
+
+For example, given the list of temperatures T = [73, 74, 75, 71, 69, 72, 76, 73], your output should be [1, 1, 4, 2, 1, 1, 0, 0].
+
+Note: The length of temperatures will be in the range [1, 30000]. Each temperature will be an integer in the range [30, 100].
+
+Karl solutioN:
+
+time exceeded:
+
+public class Solution {
+    public int[] DailyTemperatures(int[] T) {
+        int[] result = new int[T.Length];
+        for(int i = 0 ; i < T.Length -1 ; i ++){
+            int counter = 1;
+            for(int j = i + 1; j < T.Length ; j++ ){
+                if(T[i] < T[j]){
+                    result[i] = counter;
+                    break;
+                }
+                counter++;
+            }
+        }
+        return result;
+    }
+}
+
+
+Stack solution:
+
+//stack 有个特点【后入先出】 FILO first In Last Out
+class Solution {
+    public int[] dailyTemperatures(int[] temperatures) {
+        int[] result = new int[temperatures.length];
+        Stack<Integer> stack = new Stack<>(); // Make it a stack of indices.
+        for (int i = 0; i < temperatures.length; i++) { //只需要循环一次
+            while (!stack.isEmpty() && temperatures[i] > temperatures[stack.peek()]) { // 如果stack不为空 而且 循环到的的元素比最外援的元素要大的话，就把最外面的元素pop了，并且之前在stack里面的index 就会有result的值【result的值就是比他warmer离他的距离】，这个值就是两个index的差值。
+                int index = stack.pop();
+                result[index] = i - index;
+            }
+            stack.push(i); //无论如何都要把现在循环到的值push到stack里面 以做后用。
+        }
+        return result;        
+    }
+}
