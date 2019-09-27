@@ -1,0 +1,54 @@
+Given an integer array, you need to find one continuous subarray that if you only sort this subarray in ascending order, then the whole array will be sorted in ascending order, too.
+
+You need to find the shortest such subarray and output its length.
+
+Example 1:
+Input: [2, 6, 4, 8, 10, 9, 15]
+Output: 5
+Explanation: You need to sort [6, 4, 8, 10, 9] in ascending order to make the whole array sorted in ascending order.
+Note:
+Then length of the input array is in range [1, 10,000].
+The input array may contain duplicates, so ascending order here means <=.
+
+1. double loop:
+//对每个数字，都找出他的最右和最左，然后最大的最又减去最小的最左，即为答案。这样就满足了对所有的数一定都cover到了
+public class Solution {
+    public int findUnsortedSubarray(int[] nums) {
+        int l = nums.length, r = 0;
+        for (int i = 0; i < nums.length - 1; i++) {
+            for (int j = i + 1; j < nums.length; j++) {
+                if (nums[j] < nums[i]) {
+                    r = Math.max(r, j);
+                    l = Math.min(l, i);
+                }
+            }
+        }
+        return r - l < 0 ? 0 : r - l + 1;
+    }
+}
+
+2. stack
+
+public class Solution {
+    public int findUnsortedSubarray(int[] nums) {
+        Stack < Integer > stack = new Stack < Integer > ();
+        int l = nums.length, r = 0;
+        // 其实跟上面的一样，先从左侧来找最left的，把index依次push到stack里面，如果发现最上面的index的数> 当前循环到的数
+        // 则需要pop出来stack最上面的数字，并且一直pop到比当前循环到的数小才可以。这样就可以找到最左侧需要换的值，也可得index
+        for (int i = 0; i < nums.length; i++) {
+            while (!stack.isEmpty() && nums[stack.peek()] > nums[i])
+                l = Math.min(l, stack.pop());
+            stack.push(i);
+        }
+        stack.clear();
+        //右侧也是相同的逻辑，从右侧开始loop，【suppose to be】数字越来越小，如果循环到的数字比stack里面的阿数字要大的话，则
+        //需要一直pop stack里面的数字，直到比循环到的数字大。并且该index（也就是刚从stack里pop出来的最新的值） 就是最右侧最大的需要
+        //换的。
+        for (int i = nums.length - 1; i >= 0; i--) {
+            while (!stack.isEmpty() && nums[stack.peek()] < nums[i])
+                r = Math.max(r, stack.pop());
+            stack.push(i);
+        }
+        return r - l > 0 ? r - l + 1 : 0;
+    }
+}
