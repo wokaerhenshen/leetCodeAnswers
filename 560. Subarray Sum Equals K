@@ -1,0 +1,62 @@
+Given an array of integers and an integer k, you need to find the total number of continuous subarrays whose sum equals to k.
+
+Example 1:
+Input:nums = [1,1,1], k = 2
+Output: 2
+Note:
+The length of the array is in range [1, 20,000].
+The range of numbers in the array is [-1000, 1000] and the range of the integer k is [-1e7, 1e7].
+
+Karl's solution:
+
+public class Solution {
+    public int SubarraySum(int[] nums, int k) {
+        //frist check if it's length == 1
+        if(nums.Length == 1){
+            if(nums[0] == k) return 1;
+            return 0;
+        }
+        int result = 0;
+        //since it's continuous subarray, so we just add and see if the result == k, if it's equal we can let result++
+        for(int i = 0 ; i < nums.Length; i++){
+            int sum = 0;
+            for(int j = i ; j < nums.Length ; j++ ){
+                sum += nums[j];
+                if(sum == k){
+                    result++;
+                }
+            }
+        }
+        return result;
+    }
+}
+
+best solution:
+
+class Solution {
+public int subarraySum(int[] nums, int k) {
+        //prefix 就是说，加到这个数字的【和】
+        int prefix = 0;
+        //这个hashmap存着prefix 出现的次数
+        Map<Integer, Integer> map = new HashMap<>();//prefix -> occurence
+        int count = 0;
+        //数字0 出现了一次
+        map.put(0, 1);
+        for(int i = 0; i < nums.length; i++){
+            prefix += nums[i];
+            //如果hashmap中含有 这个prefix - k的值，也就是【现在的和-k】-【之前的和】 == 【现在的和-之前的和】=【k】 == 【有几个数字的和】 = 【k】
+            if(map.containsKey(prefix - k)){
+                //count 直接加上次数
+                count += map.get(prefix - k);
+            }
+            //如果prefix里没有过，直接次数为1
+            if(!map.containsKey(prefix)){
+                map.put(prefix, 1);
+            }else{
+              //有过的话，原来出现的次数++
+                map.put(prefix, map.get(prefix) + 1);
+            }
+        }
+        return count;
+    }
+}
