@@ -1,0 +1,42 @@
+there is a mapping 
+'a' = 1
+'b' = 2
+'c' = 3 
+....
+'z' = 26
+
+e.g. : 'ab' = '12', but if we give 12 then there are two ways to decode it to char:
+1.'ab'
+2. 'l'
+so nums_ways('12') = 2
+question: given an integter, find the number of ways it has to transfer back to chars:
+
+python solution:
+
+dymanic programming:
+
+def num_ways_dp(data):
+  //用来存着指定长度的 组合的 次数
+  memo = new int[data.length +1 ] #initialize to null's
+  return helper_dp(data,data.length,memo)
+  
+def helper_dp(data,k,memo):
+  //如果已经到终点，直接返回1
+  if k == 0:
+    return 1
+  //后面几位，从几开始呢？ 就从这个s开始
+  s = data.length - k;
+  //如果首字母是‘0’，直接返回0，并没有任何能满足
+  if(data[s]) == '0':
+    return 0
+  //如果存着相应长度代表的数字，直接返回该数字
+  if(memo[k] != null):
+    return memo[k]
+  //首先考虑第一种情况，也就是仅考虑首字母，这样的话便是下面这种考虑k-1长度
+  result = helper_dp(data,k-1,memo)
+  //如果剩余的k>2 并且 最先两个数字《26 也就是说比z小的话，还要考虑最头的两个字母连在一起的情况
+  if k>2 and int(data[s:s+2]) <=26:
+    result += helper_dp(data,k-2,memo)
+  //最后再把这个result 加到memo里面，以后可以
+  memo[k] = result
+  return result
