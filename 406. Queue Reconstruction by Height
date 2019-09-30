@@ -1,0 +1,35 @@
+Suppose you have a random list of people standing in a queue. Each person is described by a pair of integers (h, k), where h is the height of the person and k is the number of people in front of this person who have a height greater than or equal to h. Write an algorithm to reconstruct the queue.
+
+Note:
+The number of people is less than 1,100.
+
+ 
+Example
+
+Input:
+[[7,0], [4,4], [7,1], [5,0], [6,1], [5,2]]
+
+Output:
+[[5,0], [7,0], [5,2], [6,1], [4,4], [7,1]]
+
+best solutioN:
+
+//so bascially the idea is first you sort the array by the desc order of index[0] because you always want to insert then first, and you
+//sort the array by the asc order of index[1] because you want the smaller index[1] sitted fronter.
+
+//then you say you want to inset them to an array that for a specific sit you want it to be.
+
+也就是说，一切都是为了最后的insert服务的，你需要在insert之前做到【各就各位】，然后开始按照index[1]来 insert到指定位置。（因为后面的insert会覆盖掉前面insert的位置。/）
+【细品】
+
+
+public class Solution {
+    public int[][] ReconstructQueue(int[][] people) {
+        Array.Sort(people, (a, b) => { return a[0] == b[0] ? a[1].CompareTo(b[1]) : -a[0].CompareTo(b[0]); });
+        return people;
+        List<int[]> list = new List<int[]>();
+        foreach (var p in people)
+            list.Insert(p[1], p);
+        return list.ToArray();        
+    }
+}
