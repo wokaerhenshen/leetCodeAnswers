@@ -1,0 +1,48 @@
+Given a collection of distinct integers, return all possible permutations.
+
+Example:
+
+Input: [1,2,3]
+Output:
+[
+  [1,2,3],
+  [1,3,2],
+  [2,1,3],
+  [2,3,1],
+  [3,1,2],
+  [3,2,1]
+]
+
+best solutioN:
+
+//首先这题肯定会用到【递归】
+
+class Solution {
+    public List<List<Integer>> permute(int[] arr){
+        List<Integer> curr = new ArrayList<>();
+        List<List<Integer>> res = new ArrayList<>();
+        backtrack(curr, res, arr);
+        return res;
+    }
+    //用backtrack 直到track到size跟arr的size相同，相同的时候push 进最后的res array即可
+    private  void backtrack(List<Integer> curr, List<List<Integer>>res, int[] arr) {
+        if (curr.size()==arr.length){
+            // permutation generated, add to res.
+            res.add(new ArrayList<>(curr));
+            return;
+        }
+        for (int i = 0; i < arr.length; i++) {
+            //因为这个会再递归里面，所以要判断其应该不包含之前包含过的元素
+            if (!curr.contains(arr[i])){
+                //传进来的size
+                int idx = curr.size();
+                //把这个未重复的元素加进去，并且加到【最后一位】，也就是【size】所代表的【位数】
+                curr.add(idx, arr[i]);
+                //然后继续进入【递归】
+                backtrack(curr, res, arr);
+                //因为这个curr还在循环里，需要继续使用，需要保证下一次循环用到的是【相同size】的curr，所以要把现在刚加进去的index【移除】
+                curr.remove(idx);
+            }
+        }
+    }
+}
