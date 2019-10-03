@@ -16,10 +16,13 @@ karl solution:
 public class Solution {
     public int MaxSubArray(int[] nums) {
         int temp = 0;
+        //先让result 为最小，等会比大小取大
         int result = int.MinValue;
         for(int i = 0 ; i < nums.Length ; i++){
             temp += nums[i];
+            //比大小，看看哪家最大，即为result
             result = Math.Max(result,temp);
+            //如果和小于0 之前的直接都抛弃
             if(temp < 0){
                 temp = 0;
             }
