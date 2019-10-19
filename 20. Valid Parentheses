@@ -69,3 +69,27 @@ public class Solution {
         }
     }
 }
+
+
+best simple solution:
+
+public boolean isValid(String s) {
+    //逻辑是一样的但是精简了很多
+	Stack<Character> stack = new Stack<Character>();
+	for (char c : s.toCharArray()) {
+		if (c == '(')
+			stack.push(')');
+		else if (c == '{')
+			stack.push('}');
+		else if (c == '[')
+			stack.push(']');
+        //精髓，判断之前push进去的右半边是不是他应该是的右半边，如果不是直接返回false
+		else if (stack.isEmpty() || stack.pop() != c)
+			return false;
+	}
+    //直接调用方法来判定是否为空
+	return stack.isEmpty();
+}
+
+
+
