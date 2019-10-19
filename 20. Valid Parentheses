@@ -1,0 +1,71 @@
+Given a string containing just the characters '(', ')', '{', '}', '[' and ']', determine if the input string is valid.
+
+An input string is valid if:
+
+Open brackets must be closed by the same type of brackets.
+Open brackets must be closed in the correct order.
+Note that an empty string is also considered valid.
+
+Example 1:
+
+Input: "()"
+Output: true
+Example 2:
+
+Input: "()[]{}"
+Output: true
+Example 3:
+
+Input: "(]"
+Output: false
+Example 4:
+
+Input: "([)]"
+Output: false
+Example 5:
+
+Input: "{[]}"
+Output: true
+
+karl's answer:
+//用stack，后入先出，所以判断就完事了。
+public class Solution {
+    public bool IsValid(string s) {
+        Stack myStack = new Stack();
+        //循环一遍就完事
+        for(int i = 0 ; i < s.Length ; i++){
+            //如果是左半边，直接push到stack里
+            if(s[i] == '(' || s[i] == '{' || s[i] == '['){
+                myStack.Push(s[i]);
+            }else{
+            //如果是右半边，要把之前的左半边pop出来对一下，对的上就继续，对不上直接false
+                if(myStack.Count == 0){
+                    return false;
+                }
+                string myChar = myStack.Peek().ToString();
+                myStack.Pop();
+                switch(s[i]){
+                    case (')') :
+                        if(myChar != "(") return false;
+                        break;
+                    case ('}') :
+                        if(myChar != "{") return false;
+                        break;
+                    case (']') :
+                        if(myChar != "[") return false;
+                        break;
+                    default:
+                        return false;
+                        break;
+                }
+            }
+        }
+        //最后再判断是不是全pop出来了，全出来才对。
+        if(myStack.Count == 0){
+            return true;
+        }
+        else{
+            return false;    
+        }
+    }
+}
